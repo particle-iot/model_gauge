@@ -1,17 +1,12 @@
-# ModelGauge
-MAX17043 FuelGauge Custom Model Configuration
 
-### File Structure:
-- `/src`: this is the source code folder, include the major file for application firmware
-- `/example`: example code for reference, can help understand how to use this library
-- `/doc`: datasheet and .ini files
-- `/image`: image folder
+#include "Particle.h"
+#include "model_gauge.h"
 
+SerialLogHandler logHandler(115200, LOG_LEVEL_INFO);
+SYSTEM_MODE(MANUAL);
 
-# How to Use ModelGauge Library
-### 1. Create a new model_config_t object and fill the field data according to the custom model `.ini` file
-```cpp
-// example config of LG INR21700 battery
+// define your new battery model config first, or use the default config in model_gauge.h
+// example: LG INR21700 battery model get from the .ini file
 const model_config_t model_config_example = {
     .EmptyAdjustment=0,
     .FullAdjustment=100,
@@ -29,14 +24,10 @@ const model_config_t model_config_example = {
         0x13, 0xC0, 0x15, 0x80, 0x11, 0xC0, 0x13, 0x20, 0x3D, 0x00, 0x5E, 0x60, 0x01, 0x20, 0x01, 0x20,
     }
 };
-```
-### 2. Create the ModelGauge object with the model config
-```cpp
-ModelGauge model_gauge(model_config_example);
-```
 
-### 3. Load model config at `startup()`
-```cpp
+// create the ModelGauge object with the model config
+ModelGauge model_gauge(model_config_example);
+
 void setup()
 {
     Serial.begin();
@@ -46,10 +37,7 @@ void setup()
     // load model config when power on 
     model_gauge.load_config();
 }
-```
 
-### 4. Read SoC and Voltage at `loop()`, recommend to verify mode every 1hour
-```cpp
 void loop()
 {
     static uint32_t last_10s = 0;
@@ -75,12 +63,3 @@ void loop()
         model_gauge.verify_model();
     }
 }
-```
-
-# Example Test Log
-![image](https://github.com/particle-iot/model_gauge/blob/master/image/test_log.png)
-
-
-# Example INR21700 Battery Voltage-SoC Curve
-![image](https://github.com/particle-iot/model_gauge/blob/master/image/voltage_soc.png)
-

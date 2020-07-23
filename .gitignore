@@ -1,0 +1,19 @@
+# Key files
+*.der
+*.pem
+
+# Ignore Build Data
+*.bin
+*.zip
+release/*
+
+# Unit test build folder
+ci/*.gz
+
+# Platform-specific settings
+.DS_Store
+*.crc_block
+*.no_crc
+target/
+.vscode/
+*.code-workspace
