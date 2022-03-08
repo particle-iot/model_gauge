@@ -140,11 +140,11 @@ float ModelGauge::get_soc()
     read_word(0x04, SOC_1, SOC_2); 
     if(_config.bits == 18) 
     { 
-        SOC_percent = ((SOC_1 << 8) + SOC_2) / 256; 
+        SOC_percent = ((SOC_1 << 8) + SOC_2) / 256.0f;
     } 
     else if(_config.bits == 19) 
     { 
-        SOC_percent = ((SOC_1 << 8) + SOC_2) / 512; 
+        SOC_percent = ((SOC_1 << 8) + SOC_2) / 512.0f;
     }
     return SOC_percent;
 }
