@@ -159,8 +159,9 @@ float ModelGauge::get_volt()
     return value / 800.0;
 }
 
-void ModelGauge::verify_model()
+ModelGaugeStatus ModelGauge::verify_model()
 {
+    auto ret = ModelGaugeStatus::NONE;
     byte original_OCV_1, original_OCV_2; 
     byte original_RCOMP_1, original_RCOMP_2; 
     byte SOC_1, SOC_2; 
@@ -184,8 +185,11 @@ void ModelGauge::verify_model()
     { 
         LOGI("model verify failed, reload it");
         load_config();
+        ret = ModelGaugeStatus::RELOAD;
     }
     write_word(0x3E, 0x00, 0x00);
+
+    return ret;
 }
 
 void ModelGauge::read_word(byte address, byte &msb, byte &lsb)
