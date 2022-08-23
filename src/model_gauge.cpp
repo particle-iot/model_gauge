@@ -179,7 +179,7 @@ ModelGaugeStatus ModelGauge::verify_model()
     { 
         LOGI("model verify success");
         write_word(0x0C, original_RCOMP_1, original_RCOMP_2); 
-        write_word(0x0E, original_OCV_1, original_OCV_2);   
+        write_word(0x0D, original_OCV_1, original_OCV_2);   
     } 
     else 
     { 
