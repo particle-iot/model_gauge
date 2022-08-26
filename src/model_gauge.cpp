@@ -175,7 +175,7 @@ ModelGaugeStatus ModelGauge::verify_model()
     delay(150);
 
     read_word(0x04, SOC_1, SOC_2);
-    if(SOC_1 >= _config.SOCCheckA && SOC_1 <= _config.SOCCheckB) 
+    if(SOC_1 > _config.SOCCheckA && SOC_1 <= _config.SOCCheckB) 
     { 
         LOGI("model verify success");
         write_word(0x0C, original_RCOMP_1, original_RCOMP_2); 
