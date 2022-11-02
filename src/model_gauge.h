@@ -19,6 +19,13 @@
 
 #define MODEL_GAUGE_DEBUG   1
 
+enum class ModelGaugeStatus
+{
+    NONE,                     /**< Success, no errors */
+    RELOAD,                   /**< Model verify failed and reloaded model */
+    IO,                       /**< IO error */
+};
+
 typedef struct
 {
     uint8_t EmptyAdjustment;  // 
@@ -90,8 +97,10 @@ public:
      *  occasionally verify the model and reload if necessary. Maxim recommends doing this once per 
      *  hour while the application is active. The following example shows how to verify the model. 
      *  Alternatively the model can simply be reloaded once per hour without verification.
+     * @retval ModelGaugeStatus::NONE Success
+     * @retval ModelGaugeStatus::RELOAD Model corrupted and reloaded
      */
-    void verify_model();
+    ModelGaugeStatus verify_model();
 
 protected:
     // register operation functions
