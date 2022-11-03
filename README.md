@@ -78,9 +78,9 @@ void loop()
 ```
 
 # Example Test Log
-![image](https://github.com/particle-iot/model_gauge/blob/master/image/test_log.png)
+![image](https://github.com/particle-iot/model_gauge/blob/main/image/test_log.png)
 
 
 # Example INR21700 Battery Voltage-SoC Curve
-![image](https://github.com/particle-iot/model_gauge/blob/master/image/voltage_soc.png)
+![image](https://github.com/particle-iot/model_gauge/blob/main/image/voltage_soc.png)
 
