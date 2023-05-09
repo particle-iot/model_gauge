@@ -30,18 +30,18 @@ enum class ModelGaugeStatus
 
 typedef struct
 {
-    uint8_t EmptyAdjustment;  // 
-    uint8_t FullAdjustment;   // 
-    uint8_t RCOMP0;           // Starting RCOMP value 
-    float TempCoUp;           // Temperature (hot) coeffiecient for RCOMP. Used in UPDATE RCOMP step 
-    float TempCoDown;         // Temperature (cold) coeffiecient for RCOMP. Used in UPDATE RCOMP step. 
-    uint32_t OCVTest;         // OCV Test value in decimal. Used in step 7 
-    uint8_t SOCCheckA;        // SOCCheck low value. Used to verify model 
-    uint8_t SOCCheckB;        // SOCCheck high value. Used to verify model 
-    uint8_t bits;             // 18 or 19 bit model. See Calculating SOC for details. 
-    // uint8_t evkit_data1[32];  // 32 bytes used for EVKit software only. Discard this data  
-    uint8_t model_data[64];   // 64 bytes of Model Data begin here. Write these bytes in this order to the first table address at 0x40h. 
-    // uint8_t evkit_data2[32];  // 32 bytes used for EVKit software only. Discard this data  
+    uint8_t EmptyAdjustment;  //
+    uint8_t FullAdjustment;   //
+    uint8_t RCOMP0;           // Starting RCOMP value
+    float TempCoUp;           // Temperature (hot) coeffiecient for RCOMP. Used in UPDATE RCOMP step
+    float TempCoDown;         // Temperature (cold) coeffiecient for RCOMP. Used in UPDATE RCOMP step.
+    uint32_t OCVTest;         // OCV Test value in decimal. Used in step 7
+    uint8_t SOCCheckA;        // SOCCheck low value. Used to verify model
+    uint8_t SOCCheckB;        // SOCCheck high value. Used to verify model
+    uint8_t bits;             // 18 or 19 bit model. See Calculating SOC for details.
+    // uint8_t evkit_data1[32];  // 32 bytes used for EVKit software only. Discard this data
+    uint8_t model_data[64];   // 64 bytes of Model Data begin here. Write these bytes in this order to the first table address at 0x40h.
+    // uint8_t evkit_data2[32];  // 32 bytes used for EVKit software only. Discard this data
 } model_config_t;
 
 // LG 21700 battery model get from the .ini file
@@ -57,7 +57,7 @@ const model_config_t model_config_lg21700 = {
     .bits = 19,
     .model_data = {
         0x88, 0x70, 0xAA, 0x10, 0xAD, 0x90, 0xB0, 0x60, 0xB3, 0xF0, 0xB7, 0x00, 0xB8, 0xF0, 0xBC, 0x50,
-        0xBF, 0xE0, 0xC2, 0x00, 0xC4, 0x60, 0xC7, 0x40, 0xCA, 0xD0, 0xCC, 0x40, 0xCD, 0x00, 0xDA, 0xC0, 
+        0xBF, 0xE0, 0xC2, 0x00, 0xC4, 0x60, 0xC7, 0x40, 0xCA, 0xD0, 0xCC, 0x40, 0xCD, 0x00, 0xDA, 0xC0,
         0x00, 0x40, 0x07, 0x00, 0x0C, 0x00, 0x10, 0x40, 0x13, 0x00, 0x1D, 0x60, 0x19, 0x20, 0x1A, 0xE0,
         0x13, 0xC0, 0x15, 0x80, 0x11, 0xC0, 0x13, 0x20, 0x3D, 0x00, 0x5E, 0x60, 0x01, 0x20, 0x01, 0x20,
     }
@@ -77,8 +77,10 @@ public:
 
     /**
      * @brief load battery model config to fuel gauge by the input model
+     * @retval ModelGaugeStatus::NONE Success
+     * @retval ModelGaugeStatus::IO Errors ocurred during model load
      */
-    void load_config();
+    ModelGaugeStatus load_config();
 
     /**
      * @brief read register and calculate to soc percentage
@@ -94,10 +96,10 @@ public:
 
     /**
      * @brief verify the custom model in RAM
-     * @details ModelGauge devices store the custom model parameters in RAM. The RAM data can be 
-     *  corrupted in the event of a power loss, brown out or ESD event. It is good practice to 
-     *  occasionally verify the model and reload if necessary. Maxim recommends doing this once per 
-     *  hour while the application is active. The following example shows how to verify the model. 
+     * @details ModelGauge devices store the custom model parameters in RAM. The RAM data can be
+     *  corrupted in the event of a power loss, brown out or ESD event. It is good practice to
+     *  occasionally verify the model and reload if necessary. Maxim recommends doing this once per
+     *  hour while the application is active. The following example shows how to verify the model.
      *  Alternatively the model can simply be reloaded once per hour without verification.
      * @retval ModelGaugeStatus::NONE Success
      * @retval ModelGaugeStatus::RELOAD Model corrupted and reloaded
